@@ -32,7 +32,7 @@ two_atts = [{
     {
     'works_out': 0,
     'eats_vegies': 0,
-    'healthy': 0
+    'healthy': 1
     },
     {
     'works_out': 5,
