@@ -54,3 +54,5 @@ if __name__ == '__main__':
         'eats_vegies': 3
     }
     print knn(5, two_atts, test, 'healthy')
+
+# TODO: create a simple sample data generator for testing MLAs
