@@ -35,7 +35,7 @@ def k_mean(k, data):
             for cent in centroids:
                 dist = 0
                 for key in cent.keys():
-                    if key == '_centId':
+                    if (key == '_centId') or (key == 'objects'):
                         continue
                     dist = dist + (d[key] - cent[key])**2
                 out.append({'_centId': cent['_centId'], 'distance': dist})
@@ -44,6 +44,8 @@ def k_mean(k, data):
             centroid = next((l for l in centroids if l['_centId'] == cid), None)
             centroid['objects'].append(d)
 
+        import pdb
+        pdb.set_trace()
         print centroids
 
     cents = pick_centroids(k, data)
@@ -51,4 +53,4 @@ def k_mean(k, data):
 
 
 if __name__ == '__main__':
-    k_mean(2, two_atts)
+    k_mean(4, two_atts)
