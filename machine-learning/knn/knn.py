@@ -1,6 +1,6 @@
 import math
 from collections import Counter
-from .training_vectors import two_atts
+from data.training_vectors import two_atts
 
 """
 Implementation of the k-nearest nodes algorithm
@@ -19,6 +19,8 @@ def knn(class_count, sample_data, test, label):
     `healthy` is the label in this case [ranges from 1 to 5]
     The third arg is `test` a dict with n-1 fields where n is the number of
     fields in the sample data. The algorithm should compute this missing label
+
+    Returns the label for the `test` item 
     """
     
     # 1. Determine the k-value to use
