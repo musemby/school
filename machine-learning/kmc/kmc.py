@@ -1,3 +1,4 @@
+from __future__ import division
 import copy
 
 from data.training_vectors import two_atts
@@ -44,12 +45,28 @@ def k_mean(k, data):
             centroid = next((l for l in centroids if l['_centId'] == cid), None)
             centroid['objects'].append(d)
 
-        import pdb
-        pdb.set_trace()
-        print centroids
+        return centroids
+
+    def refine_clusters(centroids):
+        """
+            With the initial set of clusters:
+                1. Find new centroids (averages of their attrs)
+                2. Repeat compute_distances with the new centroids
+        """
+        cluster = copy.deepcopy(centroids) # preserve the original for later comparisons
+        for cent in cluster:
+            for key in cent['objects'][0].keys(): # random sample to get keys from
+                val = 0
+                sm = sum(i[key] for i in cent['objects'])
+                size = len(cent['objects'])
+                cent[key] = round(sm / size, 3)
+
+        print compute_distances(cluster, data)
+
 
     cents = pick_centroids(k, data)
-    return compute_distances(cents, data)
+    clusters =  compute_distances(cents, data)
+    return refine_clusters(clusters)
 
 
 if __name__ == '__main__':
