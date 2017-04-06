@@ -3,7 +3,7 @@ from collections import Counter
 from data.training_vectors import two_atts
 
 """
-Implementation of the k-nearest nodes algorithm
+	Implementation of the k-nearest nodes algorithm
 """
 
 def knn(class_count, sample_data, test, label):
