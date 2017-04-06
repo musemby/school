@@ -58,3 +58,4 @@ if __name__ == '__main__':
     print knn(5, two_atts, test, 'healthy')
 
 # TODO: create a simple sample data generator for testing MLAs
+# TODO: A 

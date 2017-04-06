@@ -1,3 +1,5 @@
+import copy
+
 from data.training_vectors import two_atts
 
 """
@@ -18,7 +20,35 @@ def k_mean(k, data):
     """
 
     def pick_centroids(k, data):
-        centroids = data[:k]
+        centroids = copy.deepcopy(data[:k])
+        k = 1
+        for cent in centroids:
+            cent['_centId'] = k
+            cent['objects'] = []
+            k += 1
+
+        return centroids
+        
+    def compute_distances(centroids, data):
+        for d in data:
+            out = []
+            for cent in centroids:
+                dist = 0
+                for key in cent.keys():
+                    if key == '_centId':
+                        continue
+                    dist = dist + (d[key] - cent[key])**2
+                out.append({'_centId': cent['_centId'], 'distance': dist})
+            
+            cid = min(out, key=lambda x: x['distance'])['_centId']
+            centroid = next((l for l in centroids if l['_centId'] == cid), None)
+            centroid['objects'].append(d)
+
+        print centroids
+
+    cents = pick_centroids(k, data)
+    return compute_distances(cents, data)
+
 
 if __name__ == '__main__':
     k_mean(2, two_atts)
