@@ -13,30 +13,54 @@ def k_mean(k, data):
         return k clusters with their items in them
         Takes `k` (number of clusters expected) as the first arg
             Steps:  
-                1. Determine the centroids of these k clusters [pick first k items not random]
+                1. Determine the centroids of these k clusters [pick first k items not random(for now)]
                 Repeat:
                     i.   Get the centroid's coordinates for each cluster
                     ii.  Calculate distance of each item to the centroid
                     iii. Group each item (to the nearest cluster)  
     """
 
-    def pick_centroids(k, data):
-        centroids = copy.deepcopy(data[:k])
+    def set_identifier(arr, identifier_name):
+        """ Give me an list of dicts and I shall give each dict an identifier
+            matching the identifier_name
+        """
         k = 1
-        for cent in centroids:
-            cent['_centId'] = k
-            cent['objects'] = []
+        for a in arr:
+            a[identifier_name] = k
             k += 1
 
-        return centroids
+        return arr
+
+    def preparation(k, data):
+        """
+            Prep work for the algorithm namely:
+                1. Get the centroids given k
+                2. Give each cluster an identifier
+                3. Initialize objects --> holds data items in that cluster
+                4. Give each data item an identifier
+        """
+        centroids = copy.deepcopy(data[:k])
+        for cent in centroids:
+            cent['objects'] = []
+
+        set_identifier(centroids, '_centId')
+        set_identifier(data, '_id')
+
+        return (centroids, data)
+
         
     def compute_distances(centroids, data):
+        """
+            Given clusters(centroids) and a data set:
+                Calculates the euclidian distances between each data item and each cluster
+                Place each data item in the nearest cluster
+        """
         for d in data:
             out = []
             for cent in centroids:
                 dist = 0
                 for key in cent.keys():
-                    if (key == '_centId') or (key == 'objects'):
+                    if key in ['_centId', 'objects', '_id']:
                         continue
                     dist = dist + (d[key] - cent[key])**2
                 out.append({'_centId': cent['_centId'], 'distance': dist})
@@ -47,6 +71,11 @@ def k_mean(k, data):
 
         return centroids
 
+    def add_to_cluster(cluster, obj):
+        objects = cluster['objects']
+        if obj in objects:
+            pass
+
     def refine_clusters(centroids):
         """
             With the initial set of clusters:
@@ -55,19 +84,21 @@ def k_mean(k, data):
         """
         cluster = copy.deepcopy(centroids) # preserve the original for later comparisons
         for cent in cluster:
-            for key in cent['objects'][0].keys(): # random sample to get keys from
+            for key in cent['objects'][0].keys(): # get keys from first sample
+                if key == '_id':
+                    continue
                 val = 0
                 sm = sum(i[key] for i in cent['objects'])
                 size = len(cent['objects'])
                 cent[key] = round(sm / size, 3)
 
-        print compute_distances(cluster, data)
+        # apply compute_distances with same data but new centroids
+        return compute_distances(cluster, data)
 
-
-    cents = pick_centroids(k, data)
-    clusters =  compute_distances(cents, data)
-    return refine_clusters(clusters)
-
+    centroids, data = preparation(k, data)
+    cents = compute_distances(centroids, data)
+    print cents
+    print refine_clusters(cents)
 
 if __name__ == '__main__':
     k_mean(4, two_atts)
