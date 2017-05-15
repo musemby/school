@@ -22,11 +22,11 @@ void die(char *s)
 int main(void)
 {
     struct sockaddr_in si_other;
-    int s, i, slen=sizeof(si_other);
+    int s, slen=sizeof(si_other);
     char buf[BUFLEN];
     char message[BUFLEN];
  
-    if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+    if ( (s=socket(AF_INET, SOCK_DGRAM, 0)) == -1)
     {
         die("socket");
     }
@@ -41,43 +41,40 @@ int main(void)
         exit(1);
     }
  
-    while(1)
-    {
-        int order, i, j, n, matrix[20][20];
+    int order, i, j, n, matrix[20][20];
 
-        printf("\nEnter the order of the matrix: ");
-        scanf("%d", &order);
+    printf("\nEnter the order of the matrix: ");
+    scanf("%d", &order);
 
-        printf("\nEnter the elements of the matrix\n");
-        for(i=1;i<=order;i++){
-            for(j=1;j<=order;j++){
-                printf("Element at [%d][%d] = ",i,j);
-                scanf("%d",&matrix[i][j]);
-            }
+    printf("\nEnter the elements of the matrix\n");
+    for(i=1;i<=order;i++){
+        for(j=1;j<=order;j++){
+            printf("Element at [%d][%d] = ",i,j);
+            scanf("%d",&matrix[i][j]);
         }
-
-         
-        //send the message
-        if (sendto(s, &order, sizeof(order) , 0 , (struct sockaddr *) &si_other, slen)==-1)
-        {
-            die("sendto()");
-        }
-        if (sendto(s, matrix, sizeof(matrix) , 0 , (struct sockaddr *) &si_other, slen)==-1)
-        {
-            die("sendto()");
-        }
-         
-        //receive a reply and print it
-        //clear the buffer by filling null, it might have previously received data
-        memset(buf,'\0', BUFLEN);
-        //try to receive some data, this is a blocking call
-        if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1)
-        {
-            die("recvfrom()");
-        }
-         
-        puts(buf);
     }
+
+     
+    //send the message
+    if (sendto(s, &order, sizeof(order) , 0 , (struct sockaddr *) &si_other, slen)==-1)
+    {
+        die("sendto()");
+    }
+    if (sendto(s, matrix, sizeof(matrix) , 0 , (struct sockaddr *) &si_other, slen)==-1)
+    {
+        die("sendto()");
+    }
+     
+    //receive a reply and print it
+    //clear the buffer by filling null, it might have previously received data
+    memset(buf,'\0', BUFLEN);
+    //try to receive some data, this is a blocking call
+    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1)
+    {
+        die("recvfrom()");
+    }
+     
+    puts(buf);
  
     close(s);
     return 0;

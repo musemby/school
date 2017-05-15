@@ -27,7 +27,7 @@ void throw_error(char *msg) {
 int main(int argc, char *argv[])
 {
     int sockfd, portno, n;
-    int input, temp, row,col;
+    int temp, row,col;
 
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
         for(col=1;col<=order;col++){
             temp = 0;
             printf("Element at [%d][%d] = ",row,col);
-            input=scanf("%d",&matrix[row][col]);
+            scanf("%d",&matrix[row][col]);
         }
     }
 

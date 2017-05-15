@@ -56,6 +56,14 @@ int main(void)
         {
             die("recvfrom()");
         }
+
+        printf("The order of the matrix is: %d\n\n",order);
+        for(int i=1;i<=order;i++){
+            for(int j=1;j<=order;j++)
+                printf("\t%d ",matrix[i][j]);
+            printf("\n");
+        }
+
         int det;
          
         //print details of the client/peer and the data received
