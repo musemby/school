@@ -27,7 +27,7 @@ void throw_error(char *msg) {
 int main(int argc, char *argv[])
 {
     int sockfd, portno, n, o, p;
-    int temp, row,col, det;
+    int temp, row, col, det=0;
 
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -69,13 +69,8 @@ int main(int argc, char *argv[])
     validate_code(o, "Sorry, there was an error writing to the socket");
     
     p = recv(sockfd, &det, 2000, 0);
-    validate_code(p, "Sorry, there was an error reading from the socket");
-    printf("%d\n",det);
+    validate_code(recv(sockfd, &det, 2000, 0), "Sorry, there was an error reading from the socket");
+    printf("The determinant is: %d\n", det);
 
-    // if( recv(sockfd, &det , size_t(det) , 0) < 0)
-    // {
-    //     throw_error("Failed");
-    // }
-    // printf("%d\n",det);
     return 0;
 }

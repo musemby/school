@@ -81,8 +81,8 @@ void receivefromclient (int sock)
             printf("\t%d ",matrix[i][j]);
         printf("\n");
     }
-    n = write(sock,"\nThe determinant of the matrix is: ",50);
-    validate_code(n, "Sorry, there was an error writing to the socket");
+    // n = write(sock,"\nThe determinant of the matrix is: ",50);
+    // validate_code(n, "Sorry, there was an error writing to the socket");
 
     det = determinant(matrix, order);
     printf("%d\n", det);
