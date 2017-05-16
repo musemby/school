@@ -26,13 +26,11 @@ void throw_error(char *msg) {
 
 int main(int argc, char *argv[])
 {
-    int sockfd, portno, n;
-    int temp, row,col;
+    int sockfd, portno, n, o, p;
+    int temp, row,col, det;
 
     struct sockaddr_in serv_addr;
     struct hostent *server;
-
-    char buffer[256];
 
     portno = atoi(argv[2]);
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -64,14 +62,20 @@ int main(int argc, char *argv[])
         }
     }
 
-    n = write(sockfd,&order,sizeof(order));
+    n = send(sockfd, &order, sizeof(order), 0);
     validate_code(n, "Sorry, there was an error writing to the socket");
 
-    n= write(sockfd,matrix,sizeof(matrix));
-    validate_code(n, "Sorry, there was an error writing to the socket");
+    o = send(sockfd , matrix , sizeof(matrix), 0);
+    validate_code(o, "Sorry, there was an error writing to the socket");
     
-    bzero(buffer,256);
-    n = read(sockfd,buffer,255);
-    printf("%s\n",buffer);
+    p = recv(sockfd, &det, 2000, 0);
+    validate_code(p, "Sorry, there was an error reading from the socket");
+    printf("%d\n",det);
+
+    // if( recv(sockfd, &det , size_t(det) , 0) < 0)
+    // {
+    //     throw_error("Failed");
+    // }
+    // printf("%d\n",det);
     return 0;
 }

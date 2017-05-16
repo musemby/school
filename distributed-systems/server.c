@@ -1,10 +1,11 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <strings.h> //bzero, bcopy
 #include <unistd.h> // read, write
-#include <stdio.h>
 #include <sys/types.h> // types used in system calls
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include "matrix.h" // matrix determinant calculation code
 
 int matrix[20][20], order;
 
@@ -69,18 +70,23 @@ void receivefromclient (int sock)
 /*
  continuously handle connections from clients
 */
-   int n;
+   int n, p, det;
    n = read(sock,&order,sizeof(order));
    validate_code(n, "There was an error reading from socket");
 
-   printf("The order of the matrix is: %d\n\n",order);
+   printf("The order of the matrix is: %d\n",order);
    n = read(sock,matrix,sizeof(matrix));
    for(int i=1;i<=order;i++){
         for(int j=1;j<=order;j++)
             printf("\t%d ",matrix[i][j]);
         printf("\n");
     }
-
-    n = write(sock,"\n\nI got your message",18);
+    n = write(sock,"\nThe determinant of the matrix is: ",50);
     validate_code(n, "Sorry, there was an error writing to the socket");
+
+    det = determinant(matrix, order);
+    printf("%d\n", det);
+    // p = send(sock, &det, sizeof(det), 0);
+    // validate_code(p, "Sorry, there was an error writing to the socket");
+    write(sock, &det,sizeof(det));
 }
