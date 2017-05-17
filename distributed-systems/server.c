@@ -86,7 +86,6 @@ void receivefromclient (int sock)
 
     det = determinant(matrix, order);
     printf("%d\n", det);
-    // p = send(sock, &det, sizeof(det), 0);
-    // validate_code(p, "Sorry, there was an error writing to the socket");
-    write(sock, &det,sizeof(det));
+    p = write(sock, &det, sizeof(det));
+    validate_code(p, "Sorry, there was an error writing to the socket");
 }

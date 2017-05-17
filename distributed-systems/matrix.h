@@ -1,18 +1,20 @@
 #include <stdio.h>
 
-//start of the function determinant [by cofactor expansion]
+// finding determinant by cofactor expansion
 int determinant(int matrix[20][20],int order)
 {
   int entry_n,c[20],d=0,b[20][20],j,p,q,t;
-  //for determinant of two by two matrix
-  if(order==2)
+  //for order one return the first item
+  if (order=1)
+    return matrix[0][0]
+  else if(order==2)
   {
     d=0;
     d=(matrix[1][1]*matrix[2][2])-(matrix[1][2]*matrix[2][1]);
-    return(d);
+    return d;
    }
-   //continues for more than two by two matrix
-
+  
+   // for orders higher than 2
   else
   {
       //checks and compares with size of matrix
@@ -29,11 +31,10 @@ int determinant(int matrix[20][20],int order)
             if(p!=1&&q!=j)
         {
             b[r][s]=matrix[p][q];
-                s++;
-    //s stored in an array size to be subtracted by one..since arrays starts from zero
-        if(s>order-1)
-                 {
-                   r++;
+            s++;
+        //s stored in an array size to be subtracted by one..since arrays starts from zero
+        if(s>order-1) {
+                r++;
                 s=1;
             }
             }
@@ -41,16 +42,14 @@ int determinant(int matrix[20][20],int order)
          }
     //checking the sign i.e (+ or -) by multiplying -1 to the power 1+j times the minor matrix after removing row 1 and column j
     //calculate multiplier
-     for(t=1,entry_n=1;t<=(1+j);t++)
-     entry_n=(-1)*entry_n;
-     c[j]=entry_n*determinant(b,order-1);
+     for(t=1,entry_n=1;t<=(1+j);t++){
+        entry_n=(-1)*entry_n;
+        c[j]=entry_n*determinant(b,order-1);
      }
      //taking the sum of j=1 to n(number entered by user)
      for(j=1,d=0;j<=order;j++)
-     {
        d=d+(matrix[1][j]*c[j]);
 
-      }
      return d;
    }
 }

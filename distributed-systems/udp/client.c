@@ -10,7 +10,6 @@
 #include <unistd.h> // for close
  
 #define SERVER "127.0.0.1"
-#define BUFLEN 512  //Max length of buffer
 #define PORT 8888   //The port on which to send data
  
 void die(char *s)
@@ -22,9 +21,7 @@ void die(char *s)
 int main(void)
 {
     struct sockaddr_in si_other;
-    int s, slen=sizeof(si_other);
-    char buf[BUFLEN];
-    char message[BUFLEN];
+    int s, det, slen=sizeof(si_other);
  
     if ( (s=socket(AF_INET, SOCK_DGRAM, 0)) == -1)
     {
@@ -58,24 +55,20 @@ int main(void)
     //send the message
     if (sendto(s, &order, sizeof(order) , 0 , (struct sockaddr *) &si_other, slen)==-1)
     {
-        die("sendto()");
+        die("Failed to send order of matrix");
     }
     if (sendto(s, matrix, sizeof(matrix) , 0 , (struct sockaddr *) &si_other, slen)==-1)
     {
-        die("sendto()");
+        die("Failed to send the matrix");
     }
      
-    //receive a reply and print it
-    //clear the buffer by filling null, it might have previously received data
-    memset(buf,'\0', BUFLEN);
-    //try to receive some data, this is a blocking call
-    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1)
+    if (recvfrom(s, &det, sizeof(det), 0, (struct sockaddr *) &si_other, &slen) == -1)
     {
-        die("recvfrom()");
+        die("Failed to receive the determinant");
     }
-     
-    puts(buf);
- 
+
+    printf("The determinant of the matrix is: %d\n", det);
+    
     close(s);
     return 0;
 }
