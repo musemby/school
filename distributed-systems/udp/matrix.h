@@ -1,4 +1,4 @@
-#include <stdio.h>
+ array+++#include <stdio.h>
 
 //start of the function determinant [by cofactor expansion]
 int determinant(int matrix[20][20],int order)

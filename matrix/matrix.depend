@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1427017355 source:c:\users\walt\documents\codeblocksproject\matrix\main.c
+	<conio.h>
+	<stdio.h>
+
+1429641511 source:c:\users\user\desktop\matrix\main.c
+	<conio.h>
+	<stdio.h>
+
