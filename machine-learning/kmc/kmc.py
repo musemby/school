@@ -1,8 +1,6 @@
 from __future__ import division
 import copy
 
-from data.training_vectors import two_atts
-
 """
     Implementation of the k-means clustering algorithm
 """
