@@ -10,7 +10,6 @@ token_expressions = [
     (r'getchar', 'GETCHAR'),
     (r'return', 'RETURN'),
     # other tokens
-    # (r'[A-Za-z0-9_]+\.[A-Za-z]+', 'FILENAME'),
     (r'[A-Za-z_]+[A-Za-z0-9_]*', 'ID'),
     (r'[0-9]+', 'NUM'),
     (r'\#', 'OP_HASH'),

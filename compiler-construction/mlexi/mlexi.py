@@ -49,7 +49,6 @@ if __name__ == "__main__":
     xters = re.sub(r'[\s]', '', xters)
     file.close()
     tokens = lex(xters, token_expressions)
-    s = ''
     for token in tokens:
         token = '<{}>'.format(token)
         s += token
