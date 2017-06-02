@@ -1,5 +1,6 @@
 import copy
 import csv
+import json
 import math
 import random
 import sys
@@ -11,7 +12,7 @@ class Centroid():
         self.coordinates = coordinates
         self.elements = []
         self.previous_elements = []
-        self.round = 0
+        self.round = 1
         self.matches = 0
         self.mismatches = 0
 
@@ -23,12 +24,10 @@ class Centroid():
         return len(self.elements)
 
     def add_element(self, element, _round):
-        # assumption: there are no repeating elements
         if self.round == _round:
             if element in self.elements:
-                self.matches += 1
+                pass
             else:
-                self.mismatches += 1
                 self.elements.append(element)
         else:
             self.round = _round
@@ -39,7 +38,7 @@ class Centroid():
                 self.elements.append(element)
 
     def recalculate_coordinates(self):
-        x = [sum(y)/len(y) for y in zip(*self.elements)]
+        x = (sum(y)/len(y) for y in zip(*self.elements))
         self.coordinates = x
 
     def reset_elements(self):
@@ -77,11 +76,12 @@ class Kmeans():
 def main():
     k = Kmeans()
     def iterate(k):
-        for centroid in k.centroids:
-            if k.round == 1:
-                break
-            centroid.recalculate_coordinates()
-            centroid.reset_elements()
+        if k.round == 1:
+            pass
+        else:
+            for centroid in k.centroids:
+                centroid.recalculate_coordinates()
+                centroid.reset_elements()
         for item in k.dataset:
             candidates = []
             for centroid in k.centroids:
@@ -104,10 +104,25 @@ def main():
             iterate(k)
         return
     iterate(k)
-    import pdb; pdb.set_trace()
-    print k.centroids
-    print k.round
+    print "Reached convergence after {} rounds".format(k.round)
+    print "Number of clusters: {}".format(k.k)
 
+    data = {
+        'number_of_clusters': k.k,
+        'number_of_rounds_ran': k.round,
+        'clusters': []
+    }
+
+    for centroid in k.centroids:
+        ele = {
+            'name': 'cluster_{}'.format(centroid.id),
+            'elements': centroid.elements
+        }
+        data['clusters'].append(ele)
+
+    with open('clusters.json', 'w') as file:
+        json.dump(data, file, indent=4, sort_keys=False)
+        print "Output written to clusters.json"
 
 if __name__ == '__main__':
     main()

@@ -27,9 +27,9 @@ def lex(characters, token_exprs):
                         else:
                             lexemes_array.append(text)
                             lex_id = lexemes_array.index(text)
-                        token = str(tag) + ', ' + str(lex_id)
+                        token = "{}, {}".format(tag, lex_id)
                     elif tag == 'NUM':
-                        token = str(tag) + ', ' + str(text)
+                        token = "{}, {}".format(tag, text)
                     else:                   
                         token = (tag)
                 tokens.append(token)
@@ -51,6 +51,6 @@ if __name__ == "__main__":
     tokens = lex(xters, token_expressions)
     s = ''
     for token in tokens:
-        token = '<' + token + '>'
+        token = '<{}>'.format(token)
         s += token
     print s
