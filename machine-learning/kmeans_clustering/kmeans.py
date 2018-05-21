@@ -13,7 +13,6 @@ class Centroid():
         self.elements = []
         self.previous_elements = []
         self.round = 1
-        self.matches = 0
         self.mismatches = 0
 
     def __repr__(self):
@@ -32,7 +31,7 @@ class Centroid():
         else:
             self.round = _round
             if element in self.elements:
-                self.matches += 1
+                pass
             else:
                 self.mismatches += 1
                 self.elements.append(element)
@@ -42,7 +41,6 @@ class Centroid():
         self.coordinates = x
 
     def reset_elements(self):
-        self.matches = 0
         self.mismatches = 0
 
     @property
